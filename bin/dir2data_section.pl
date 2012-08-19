@@ -67,5 +67,28 @@ sub is_binary_by_file {
     Plack::App::DataSection::is_binary($mime_type);
 }
 
-print join "\n\n", @data_sections;
+
+my $data_section = join "\n\n", @data_sections;
+
+if ($args{module}) {
+    my $file_content = <<"...";
+package $args{module};
+use strict;
+use warnings;
+use parent 'Plack::App::DataSection';
+1;
+__DATA__
+$data_section
+...
+
+    my $file_name = $args{module};
+    $file_name =~ s/::.*//;
+    $file_name .= '.pm';
+
+    open my $fh, '>', $file_name;
+    print $fh $file_content;
+}
+else {
+    print $data_section;
+}
 
