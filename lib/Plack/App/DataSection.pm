@@ -50,7 +50,7 @@ sub get_content {
     my ($self, $path) = @_;
 
     my $content = $self->data_section->get_data_section($path);
-    return () unelss defined $content;
+    return () unless defined $content;
 
     my $mime_type = Plack::MIME->mime_type($path);
 
