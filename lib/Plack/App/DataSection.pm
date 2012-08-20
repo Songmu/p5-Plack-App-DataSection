@@ -59,7 +59,7 @@ sub get_content {
     }
     else {
         my $encoding = $self->encoding || 'UTF-8';
-        $mime_type .= " charset=$encoding;";
+        $mime_type .= "; charset=$encoding;";
     }
     ($content, $mime_type);
 }
@@ -67,7 +67,7 @@ sub get_content {
 sub is_binary {
     my $mime_type = shift;
 
-    $mime_type !~ /\b(?:text|xml)\b/;
+    $mime_type !~ /\b(?:text|xml|javascript|json)\b/;
 }
 
 1;
