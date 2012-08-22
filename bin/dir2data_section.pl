@@ -18,7 +18,7 @@ use Plack::App::DataSection;
 
 =head1 SYNOPSIS
 
-    % dir2data_section.pl --dir=dir
+    % dir2data_section.pl --dir=dir --module=Your::Module
 
 =cut
 
