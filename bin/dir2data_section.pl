@@ -76,7 +76,7 @@ $data_section
 ...
 
     my $file_name = $args{module};
-    $file_name =~ s/::.*//;
+    $file_name =~ s/^.*:://;
     $file_name .= '.pm';
 
     open my $fh, '>', $file_name;
