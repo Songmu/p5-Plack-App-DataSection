@@ -46,21 +46,42 @@ sub data_section {
     $self->{_reader} ||= Data::Section::Simple->new(ref $self);
 }
 
+sub get_data_section {
+    my ($self, $path) = @_;
+    $self->{_data_section_hash} ||= $self->data_section->get_data_section;
+    $self->{_data_section_hash}{$path};
+}
+
+sub get_cache {
+    my ($self, $path) = @_;
+
+    $self->{_cache}{$path};
+}
+
+sub set_cache {
+    my ($self, $path, $content) = @_;
+
+    $self->{_cache}{$path} = $content;
+}
+
 sub get_content {
     my ($self, $path) = @_;
 
-    my $content = $self->data_section->get_data_section($path);
-    return () unless defined $content;
-
     my $mime_type = Plack::MIME->mime_type($path);
+    my $is_binary = is_binary($mime_type);
 
-    if (is_binary($mime_type)) {
-        $content = decode_base64($content);
-    }
-    else {
-        my $encoding = $self->encoding || 'UTF-8';
+    unless ($is_binary) {
+        my $encoding = $self->encoding || 'utf-8';
         $mime_type .= "; charset=$encoding;";
     }
+    my $content = $self->get_cache($path);
+    return ($content, $mime_type) if $content;
+
+    $content = $self->get_data_section($path);
+    return () unless defined $content;
+
+    $content = decode_base64($content) if $is_binary;
+    $self->set_cache($path => $content);
     ($content, $mime_type);
 }
 
