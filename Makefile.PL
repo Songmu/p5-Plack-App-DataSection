@@ -10,6 +10,8 @@ tests 't/*.t';
 author_tests 'xt';
 
 test_requires 'Test::More';
+test_requires 'HTTP::Request::Common';
+test_requires 'HTTP::Response';
 
 install_script('bin/dir2data_section.pl');
 
