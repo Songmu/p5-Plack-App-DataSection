@@ -4,7 +4,7 @@ use warnings;
 use utf8;
 use autodie;
 
-use Path::Class qw/file dir/;
+use Path::Class qw/dir/;
 use Getopt::Long;
 use Pod::Usage;
 use MIME::Base64;
@@ -34,20 +34,14 @@ pod2usage(2) unless $args{dir};
 my $base_dir = $args{dir};
 my @data_sections;
 
-my $walker;
-$walker = sub {
-    my $dir = shift;
-    for my $entry ($dir->children) {
-        if (-d $entry) {
-            $walker->($entry);
-        }
-        else {
-            push @data_sections, data_section_single($entry, $base_dir);
-        }
-    }
-};
-$walker->(dir $base_dir);
+dir($base_dir)->recurse(
+    callback => sub {
+        my $file = shift;
+        return unless -f $file;
 
+        push @data_sections, data_section_single($file, $base_dir);
+    }
+);
 
 sub data_section_single {
     my ($file, $base_dir) = @_;
