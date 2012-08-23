@@ -25,6 +25,7 @@ use Plack::App::DataSection;
 my %args;
 GetOptions(
     \%args,
+    'help',
     'dir=s',
     'module=s',
 ) or die pod2usage(2);

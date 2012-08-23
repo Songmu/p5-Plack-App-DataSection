@@ -13,7 +13,7 @@ test_requires 'Test::More';
 test_requires 'HTTP::Request::Common';
 test_requires 'HTTP::Response';
 
-install_script('bin/dir2data_section.pl');
+install_script('bin/dir2data-section.pl');
 
 auto_set_repository;
 auto_include;
