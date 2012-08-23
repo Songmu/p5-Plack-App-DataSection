@@ -52,17 +52,7 @@ sub get_data_section {
     $self->{_data_section_hash}{$path};
 }
 
-sub get_cache {
-    my ($self, $path) = @_;
-
-    $self->{_cache}{$path};
-}
-
-sub set_cache {
-    my ($self, $path, $content) = @_;
-
-    $self->{_cache}{$path} = $content;
-}
+sub _cache { shift->{_cache} ||= {} }
 
 sub get_content {
     my ($self, $path) = @_;
@@ -74,14 +64,13 @@ sub get_content {
         my $encoding = $self->encoding || 'utf-8';
         $mime_type .= "; charset=$encoding;";
     }
-    my $content = $self->get_cache($path);
-    return ($content, $mime_type) if $content;
 
-    $content = $self->get_data_section($path);
-    return () unless defined $content;
+    my $content = $self->_cache->{$path} ||= do {
+        my $content = $self->get_data_section($path);
+        $content = decode_base64($content) if $content && $is_binary;
+        $content;
+    };
 
-    $content = decode_base64($content) if $is_binary;
-    $self->set_cache($path => $content);
     ($content, $mime_type);
 }
 
