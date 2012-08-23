@@ -7,6 +7,7 @@ use parent qw/Plack::Component/;
 use MIME::Base64;
 use Data::Section::Simple;
 use Plack::MIME;
+use HTTP::Date;
 
 use Plack::Util::Accessor qw(encoding);
 
@@ -27,6 +28,7 @@ sub call {
     return [ 200, [
         'Content-Type'   => $content_type,
         'Content-Length' => length($data),
+        'Last-Modified'  => $self->last_modified,
     ], [ $data ] ];
 }
 
@@ -78,6 +80,20 @@ sub is_binary {
     my $mime_type = shift;
 
     $mime_type !~ /\b(?:text|xml|javascript|json)\b/;
+}
+
+sub last_modified {
+    my $self = shift;
+
+    $self->{last_modified} ||= do {
+        my $mod = ref $self;
+        $mod =~ s!::!/!g;
+        $mod .= '.pm';
+        my $full_path = $INC{$mod};
+
+        my @stat = stat $full_path;
+        HTTP::Date::time2str( $stat[9] )
+    };
 }
 
 1;

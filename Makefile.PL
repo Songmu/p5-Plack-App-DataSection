@@ -5,6 +5,7 @@ all_from 'lib/Plack/App/DataSection.pm';
 requires 'MIME::Base64';
 requires 'Plack';
 requires 'Data::Section::Simple';
+requires 'HTTP::Date';
 
 tests 't/*.t';
 author_tests 'xt';
