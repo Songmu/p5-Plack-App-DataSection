@@ -103,13 +103,13 @@ sub last_modified {
 
 sub dump_dir {
     my ($self, $dir) = @_;
+    require Errno;
+    require Path::Class;
 
     my %data_section = %{ $self->get_data_section };
-
-    eval 'use Path::Class qw/dir/'; ## no critic
-    die $@ if $@;
     my $base_dir = Path::Class::Dir->new($dir);
-    $base_dir->mkpath;
+
+    $base_dir->mkpath or $! != Errno::EEXIST() or die "failed to create dir:$base_dir:$!";
 
     for my $key (keys %data_section) {
         my ($content) = $self->get_content($key);
@@ -120,7 +120,7 @@ sub dump_dir {
         my $dir_path = $base_dir;
         if ($sub_dir) {
             $dir_path = $dir_path->subdir($sub_dir);
-            $dir_path->mkpath;
+            $dir_path->mkpath or $! != Errno::EEXIST() or die "failed to create dir:$dir_path:$!";
         }
 
         $file = $dir_path->file($file);
