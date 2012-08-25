@@ -112,7 +112,7 @@ sub dump_dir {
     $base_dir->mkpath;
 
     for my $key (keys %data_section) {
-        my $content = $data_section{$key};
+        my ($content) = $self->get_content($key);
 
         $key =~ s!^/!!g;
         my ($sub_dir, $file) = $key =~ m!^(.*?)([^/]+)$!;
