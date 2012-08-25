@@ -51,7 +51,12 @@ sub data_section {
 sub get_data_section {
     my ($self, $path) = @_;
     $self->{_data_section_hash} ||= $self->data_section->get_data_section;
-    $self->{_data_section_hash}{$path};
+    if ($path) {
+        $self->{_data_section_hash}{$path};
+    }
+    else {
+        $self->{_data_section_hash};
+    }
 }
 
 sub _cache { shift->{_cache} ||= {} }
@@ -94,6 +99,34 @@ sub last_modified {
         my @stat = stat $full_path;
         HTTP::Date::time2str( $stat[9] )
     };
+}
+
+sub dump_dir {
+    my ($self, $dir) = @_;
+
+    my %data_section = %{ $self->get_data_section };
+
+    eval 'use Path::Class qw/dir/'; ## no critic
+    die $@ if $@;
+    my $base_dir = Path::Class::Dir->new($dir);
+    $base_dir->mkpath;
+
+    for my $key (keys %data_section) {
+        my $content = $data_section{$key};
+
+        $key =~ s!^/!!g;
+        my ($sub_dir, $file) = $key =~ m!^(.*?)([^/]+)$!;
+
+        my $dir_path = $base_dir;
+        if ($sub_dir) {
+            $dir_path = $dir_path->subdir($sub_dir);
+            $dir_path->mkpath;
+        }
+
+        $file = $dir_path->file($file);
+        my $fh = $file->openw;
+        $fh->print($content);
+    }
 }
 
 1;
