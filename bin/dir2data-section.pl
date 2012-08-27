@@ -44,26 +44,7 @@ dir($base_dir)->recurse(
     }
 );
 
-sub data_section_single {
-    my ($file, $base_dir) = @_;
-
-    my $data_section = '@@ '. $file->relative($base_dir) ."\n";
-    my $content = $file->slurp;
-    if (is_binary_by_file($file)) {
-        $content = encode_base64($content);
-    }
-    $data_section .= $content;
-}
-
-sub is_binary_by_file {
-    my $file = shift;
-
-    my $mime_type = Plack::MIME->mime_type($file) || 'text/plain';
-    Plack::App::DataSection::is_binary($mime_type);
-}
-
-
-my $data_section = join "\n\n", @data_sections;
+my $data_section = join "\n", @data_sections;
 
 if ($args{module}) {
     my $file_content = <<"...";
@@ -85,5 +66,24 @@ $data_section
 }
 else {
     print $data_section;
+}
+
+## subs
+sub data_section_single {
+    my ($file, $base_dir) = @_;
+
+    my $data_section = '@@ '. $file->relative($base_dir) ."\n";
+    my $content = $file->slurp;
+    if (is_binary_by_file($file)) {
+        $content = encode_base64($content);
+    }
+    $data_section .= $content;
+}
+
+sub is_binary_by_file {
+    my $file = shift;
+
+    my $mime_type = Plack::MIME->mime_type($file) || 'text/plain';
+    Plack::App::DataSection::is_binary($mime_type);
 }
 
