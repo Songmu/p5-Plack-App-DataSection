@@ -8,3 +8,4 @@ __DATA__
 Masayuki Matsuki
 y.songmu@gmail.com
 Plack::App::DataSection
+psgi

@@ -164,7 +164,7 @@ Plack::App::DataSection - psgi application for serving contents in data section
 
 Plack::App::DataSection is psgi application for serving contents in data section.
 
-Inherit this module and you can easly create psgi application for serving contents in data section.
+Inherit this module and you can easily create psgi application for serving contents in data section.
 
 You can even serve binary contents!
 
