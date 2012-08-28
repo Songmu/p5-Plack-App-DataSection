@@ -21,7 +21,7 @@ sub call {
     }
     $path =~ s!^/!!;
 
-    my ($data, $content_type) = $self->get_content($path);
+    my ($data, $content_type) = $path ? $self->get_content($path) : ();
 
     return $self->return_404 unless $data;
 
@@ -69,7 +69,7 @@ sub get_content {
 
     unless ($is_binary) {
         my $encoding = $self->encoding || 'utf-8';
-        $mime_type .= "; charset=$encoding;";
+        $mime_type .= "; charset=$encoding";
     }
 
     my $content = $self->_cache->{$path} ||= do {

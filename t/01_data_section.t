@@ -14,6 +14,9 @@ my %test = (
 
         my $res = $cb->(GET "/sample.txt");
         like $res->content, qr/さんぷる/;
+
+        my $res = $cb->(GET "/");
+        is $res->code, 404;
     },
     app => $handler,
 );
