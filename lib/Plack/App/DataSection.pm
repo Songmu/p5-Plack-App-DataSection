@@ -1,7 +1,7 @@
 package Plack::App::DataSection;
 use strict;
 use warnings;
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use parent qw/Plack::Component/;
 use MIME::Base64;

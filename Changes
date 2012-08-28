@@ -1,5 +1,8 @@
 Revision history for Perl extension Plack::App::DataSection
 
+0.03    Thu Aug 28 04:00:00 2012
+        - fix error when "GET /". thanks to mattn.
+
 0.02    Mon Aug 27 15:11:11 2012
         - add dump_dir method
 
