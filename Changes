@@ -1,5 +1,8 @@
 Revision history for Perl extension Plack::App::DataSection
 
+{{$NEXT}}
+        - Switch to Minilla
+
 0.03    Thu Aug 28 04:00:00 2012
         - fix error when "GET /". thanks to mattn.
 

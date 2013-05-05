@@ -11,3 +11,10 @@ MANIFEST.bak
 *.sw[po]
 tmp/
 MYMETA.*
+/Plack-App-DataSection-*
+/.build
+/_build_params
+/Build
+!Build/
+!META.json
+!LICENSE
