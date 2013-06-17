@@ -23,8 +23,9 @@ my %args = (
         'Module::Build' => 0.38,
     },
 
-    name        => 'Plack-App-DataSection',
-    module_name => 'Plack::App::DataSection',
+    name            => 'Plack-App-DataSection',
+    module_name     => 'Plack::App::DataSection',
+    allow_pureperl => 0,
 
     script_files => [glob('script/*'), glob('bin/*')],
 

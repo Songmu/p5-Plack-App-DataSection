@@ -2,6 +2,9 @@ Revision history for Perl extension Plack::App::DataSection
 
 {{$NEXT}}
 
+0.05 2013-06-17T11:18:25Z
+        - Fixup dependencies
+
 0.04 2013-05-05T17:17:55Z
         - Switch to Minilla
 
